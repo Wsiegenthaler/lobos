@@ -5,7 +5,7 @@
 
 For efficiency, *Lobos* employs the recursive variant of the gray code optimization proposed by *Antonov-Saleev*.  Initialization values supporting up to 21,201 dimensions are provided courtesy of Stephen Joe and Frances Kuo (found [here](http://web.maths.unsw.edu.au/~fkuo/sobol)).
 
-Below are examples of points drawn from a Sobol sequence and a uniform rng respectively:
+Below are examples of 2-dimensional points drawn from a Sobol and Uniform generators respectively:
 <p align="center">
   <img src="http://wsiegenthaler.github.io/Lobos/sobol.png" alt="Sobol">
   <img src="http://wsiegenthaler.github.io/Lobos/uniform.png" alt="Uniform">
