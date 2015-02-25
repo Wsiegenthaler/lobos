@@ -3,11 +3,11 @@
 
 *Lobos* provides Sobol low-discrepancy quasirandom sequences which, when used for integration, can cover a domain evenly with as little as a few points and will continue to uniformly fill the space as more points are added.
 
-For efficiency, *Lobos* employs the recursive variant of the gray code optimization proposed by *Antonovâ€“Saleev*.  Initialization values supporting up to 21,201 dimensions are provided courtesy of Stephen Joe and Frances Kuo (found [here](http://web.maths.unsw.edu.au/~fkuo/sobol)).
+For efficiency, *Lobos* employs the recursive variant of the gray code optimization proposed by *Antonov-Saleev*.  Initialization values supporting up to 21,201 dimensions are provided courtesy of Stephen Joe and Frances Kuo (found [here](http://web.maths.unsw.edu.au/~fkuo/sobol)).
 
 Below are examples of points drawn from a Sobol sequence and a uniform rng respectively:
-<img align="center" src="http://wsiegenthaler.github.io/Lobos/sobol.png" alt="Sobol">
-<img align="center" src="http://wsiegenthaler.github.io/Lobos/uniform.png" alt="Uniform">
+<img align="middle" src="http://wsiegenthaler.github.io/Lobos/sobol.png" alt="Sobol">
+<img align="middle" src="http://wsiegenthaler.github.io/Lobos/uniform.png" alt="Uniform">
 
 ## Usage
 
