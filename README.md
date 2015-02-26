@@ -24,7 +24,7 @@ Each n-dimensional point in the sequence contains values between [0,1).  The seq
 
 ## Installation
 
-Since it's currently not available as a published binary artifact, the recommended way to integrate *lobos* is to allow SBT to automatically checkout and build the source with your project.  This can be easily be configured with your project's ```project/Build.scala``` definition:
+Since it's currently not available as a published binary artifact, the recommended way to integrate *lobos* is to allow SBT to automatically checkout and build the source with your project.  This can easily be configured with your project's ```project/Build.scala``` definition:
 
 ```scala
 import sbt._
