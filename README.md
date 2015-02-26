@@ -34,7 +34,7 @@ object MyBuild extends Build {
     .dependsOn(RootProject(uri("git://github.com/wsiegenthaler/lobos.git")))
 }
 ```
-Be sure to replace ```my-project`` with the name of your project as configured in ```build.sbt```.  Note that this method requires SBT 0.11 or greater.
+Be sure to replace ```my-project``` with the name of your project as configured in ```build.sbt```.  Note that this method requires SBT 0.11 or greater.
 
 ## References
 
