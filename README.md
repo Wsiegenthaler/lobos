@@ -38,9 +38,9 @@ Be sure to replace ```my-project``` with the name of your project as configured 
 
 ## References
 
-* Joe, Stephen, and Frances Y. Kuo. "Notes on Generating Sobol Sequences." (n.d.): n. pag. Aug. 2008. Web.
+* Joe, Stephen, and Frances Y. Kuo. ["Notes on Generating Sobol Sequences."](http://web.maths.unsw.edu.au/~fkuo/sobol/joe-kuo-notes.pdf) (n.d.): n. pag. Aug. 2008. Web.
 
-* "Sobol Sequence." Wikipedia. Wikimedia Foundation, n.d. Web. 25 Feb. 2015.
+* "[Sobol Sequence.](http://en.wikipedia.org/wiki/Sobol_sequence)" Wikipedia. Wikimedia Foundation, n.d. Web. 25 Feb. 2015.
 
 ## License
 
