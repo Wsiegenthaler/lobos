@@ -1,6 +1,7 @@
 package lobos
 
 import SobolSequence._
+import breeze.linalg.{DenseMatrix, DenseVector}
 
 import scala.io.{Codec, Source}
 import scala.math.{ceil, log, pow}
@@ -125,4 +126,10 @@ object SobolSequence {
 
   /** Returns zero-based index of the rightmost zero. Used for the Gray code optimization. */
   def rightMostZero(n:Long):Int = if ((n & 1) == 0) 0 else rightMostZero(n >>> 1) + 1
+
+  /** Implicit conversions */
+  object Implicits {
+    implicit def indexedSeq2Vector(seq:IndexedSeq[Double]):DenseVector[Double] = DenseVector(seq:_*)
+    implicit def indexedSeqIterator2Matrix(iterator:Iterator[IndexedSeq[Double]]):DenseMatrix[Double] = DenseMatrix(iterator.toSeq:_*)
+  }
 }
