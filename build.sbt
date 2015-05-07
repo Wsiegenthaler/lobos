@@ -1,6 +1,8 @@
 name := "lobos"
 
-version := "1.0"
+organization := "lobos"
+
+version := "0.8"
 
 scalaVersion := "2.11.3"
 
