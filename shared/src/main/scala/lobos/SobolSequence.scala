@@ -30,12 +30,12 @@ class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit va
   require(maxLength <= valsForBits(maxBits), s"Sobol sequence can be no longer than 2^$maxBits.")
   require(dims <= params.maxDims, s"Sobol sequence can have a max of ${params.maxDims} dimensions.")
 
-  /** Initialize direction values for each dimension */
+  /** Initialize direction values for each dimension (direction/index tuples) */
   val directionsByDim = (1 to dims) map {
     case 1 => (1 to bits) map { b => 1L << (bits - b) }
-    case d => {
+    case dim => {
       /* Import the parameters needed to prepare this dimension's direction vector */
-      val p = params.getParams(d)
+      val p = params.getParams(dim)
       import p._
 
       /* Shift initial directions */
@@ -53,7 +53,7 @@ class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit va
 
       dirs.toIndexedSeq
     }
-  }
+  } zipWithIndex
 
   /** Will produce up to 'maxLength' values */
   override def hasNext = count < maxLength
@@ -66,7 +66,7 @@ class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit va
       /* Subsequent points */
       case Some(_last) => {
         val c = rightMostZero(count-1)
-        directionsByDim.zipWithIndex map { case (d, i) => _last(i) ^ d(c) }
+        directionsByDim map { case (d, i) => _last(i) ^ d(c) }
       }
     }
 
