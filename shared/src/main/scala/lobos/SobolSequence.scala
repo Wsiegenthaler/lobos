@@ -1,12 +1,8 @@
 package lobos
 
 import SobolSequence._
-import breeze.linalg.{DenseMatrix, DenseVector}
 
-import scala.io.{Codec, Source}
 import scala.math.{ceil, log, pow}
-import java.util.zip.GZIPInputStream
-
 
 /**
  * A low-discrepency Sobol sequence generator.
@@ -16,7 +12,7 @@ import java.util.zip.GZIPInputStream
  * @param params The parameters used to initialize the sequence. Default values are provided courtesy of Stephen Joe
  *               and Frances Kuo (see http://web.maths.unsw.edu.au/~fkuo/sobol) and support up to 21,201 dimensions
  */
-class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong, val params:SobolParams=defaultParams)
+class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params:SobolParams)
   extends Iterator[IndexedSeq[Double]] {
 
   val maxDims = params.maxDims
@@ -89,35 +85,6 @@ object SobolSequence {
   /** Maximum bits-per-dimension employed by this sequence (64bits per Long) */
   val maxBits = 64
 
-  /** Default parameter file path */
-  val defaultParamPath = "/new-joe-kuo-6.21201.gz"
-
-  /** Default parameter values */
-  lazy val defaultParams = loadParams(defaultParamPath)
-
-  /** Loads the 'SobolParams' from resource */
-  def loadParams(path:String, codec:Codec=Codec.UTF8) = new SobolParams {
-
-    override def getParams(dim:Int) = dimParams(dim - 1)
-    override def maxDims = dimParams.length + 1
-
-    protected val dimParams = {
-      /* Open file and decompress if necessary */
-      val gzipPattern = ".+\\.gz$".r
-      def resource = getClass.getResourceAsStream(path)
-      val source = Source.fromInputStream(path match {
-        case gzipPattern(_*) => new GZIPInputStream(resource)
-        case _ => resource
-      })
-
-      /* Parse */
-      for (line <- source.getLines.drop(1)) yield {
-        val values = line.split("\\s+")
-        DimensionParams(values(0).toInt, values(2).toLong, values.slice(3, values.length).map(_.toLong))
-      }
-    } toArray
-  }
-
   /** Computes minimum bits needed to represent 'n' values */
   def bitsForVals(n:Long) = n match { case n if (n < 1) => 0; case 1 => 1; case n => ceil(log(n) / log(2)).toInt }
 
@@ -126,10 +93,4 @@ object SobolSequence {
 
   /** Returns zero-based index of the rightmost zero. Used for the Gray code optimization. */
   def rightMostZero(n:Long):Int = if ((n & 1) == 0) 0 else rightMostZero(n >>> 1) + 1
-
-  /** Implicit conversions */
-  object Implicits {
-    implicit def indexedSeq2Vector(seq:IndexedSeq[Double]):DenseVector[Double] = DenseVector(seq:_*)
-    implicit def indexedSeqIterator2Matrix(iterator:Iterator[IndexedSeq[Double]]):DenseMatrix[Double] = DenseMatrix(iterator.toSeq:_*)
-  }
 }
