@@ -23,16 +23,16 @@ require('expose-loader');
 
 // ------------------------ Build Dirs ------------------------
 
-var targetDir = 'target';
-var resourceDir = 'src/main/resources';
-var sharedResourceDir = '../shared/src/main/resources';
+var targetDir = 'js/target';
+var resourceDir = 'js/src/main/resources';
+var sharedResourceDir = 'shared/src/main/resources';
 var rawParamFile = 'new-joe-kuo-6.21201.gz'; // loader expects joe/kuo format gzipped
 var paramWrapperFile = 'lobos-params.js';
 
 var scalaJsDir = targetDir + '/scala-2.11';
 var scalaJsFile = scalaJsDir + '/lobos-opt.js';
 
-var distDir = 'dist';
+var distDir = 'js/dist';
 
 
 // ------------------------ Webpack defaults ------------------------
@@ -59,7 +59,7 @@ gulp.task('build', ['clean', 'scala-js', 'lobos-params', 'webpack-browser', 'web
 // ------------------------ Build ScalaJS ------------------------
 
 gulp.task('scala-js', function(cb) {
-  exec('cd .. && sbt fullOptJS', function (err, stdout, stderr) {
+  exec('sbt fullOptJS', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
