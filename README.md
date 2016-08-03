@@ -1,5 +1,5 @@
 # lobos
-*A Sobol sequence generator for Scala*
+*A Sobol sequence generator for Scala and Javascript*
 
 *lobos* provides Sobol low-discrepancy quasirandom sequences which, when used for integration, can cover a domain evenly with as little as a few points and will continue to uniformly fill the space as more points are added.
 

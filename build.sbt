@@ -31,8 +31,6 @@ lazy val lobos = crossProject.in(file(".")).
   jsSettings(
     libraryDependencies  ++= Seq(),
     scalaJSOutputMode := ECMAScript6,
-    //scalaJSOutputMode := ECMAScript51Global,
-    //scalaJSOutputMode := ECMAScript51Isolated,
     skip in packageJSDependencies := false, // generate dependency file (lobos-jsdeps.js)
     scalaJSOutputWrapper := // bridges gap between scalajs output and commonjs needed by webpack
       ("var g = global || window || {}, __ScalaJSEnv = { global: g, exportsNamespace: {} }; g.LobosParams = require('./lobos-params.js'); (function() {",

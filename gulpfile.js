@@ -1,11 +1,12 @@
-/* jshint node:true */
 'use strict';
 
 var fs = require('fs');
 var path = require('path');
+var exec = require('child_process').execSync;
 var lo = require('lodash');
 
 var gulp = require('gulp');
+var babel = require('gulp-babel');
 var replace = require('gulp-replace');
 var print = require('gulp-print');
 var concat = require('gulp-concat');
@@ -14,14 +15,10 @@ var del = require('del');
 var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 
-var exec = require('child_process').exec;
-
-var nodeExternals = require('webpack-node-externals'); // prevents dependencies from being included in node-targeted webpack
-
 require('expose-loader');
 
 
-// ------------------------ Build Dirs ------------------------
+// ------------------------ Build Params ------------------------
 
 var targetDir = 'js/target';
 var resourceDir = 'js/src/main/resources';
@@ -34,52 +31,56 @@ var scalaJsFile = scalaJsDir + '/lobos-opt.js';
 
 var distDir = 'js/dist';
 
+var mainModule = 'lobos.js';
+var webFile = 'lobos-web.js';
+
+var babelPresets = ['es2015'];
 
 // ------------------------ Webpack defaults ------------------------
 
 var webpackOptions = {
   verbose: true,
   module: {
-    loaders: [ { test: /\.js$/, loader: 'babel-loader?presets[]=es2015' } ]
+    loaders: [ { test: new RegExp(distDir + "/.*\.js$"), loader: 'babel-loader', query: { presets: babelPresets } } ]
   },
   resolve: {
-    root: [ __dirname ],
+    root: [ '', __dirname + '/js/dist' ],
     modulesDirectories: ["node_modules"],
     extensions: ["", ".js"]
-  },
-  context: __dirname
+  }
 }
 
 
 // ------------------------ Build all ------------------------
 
-gulp.task('build', ['clean', 'scala-js', 'lobos-params', 'webpack-browser', 'webpack-node'], function() { });
+gulp.task('build', ['clean', 'scalajs', 'params', 'web'], function() { });
 
 
-// ------------------------ Build ScalaJS ------------------------
+// ------------------------ ScalaJS ------------------------
 
-gulp.task('scala-js', function(cb) {
-  exec('sbt fullOptJS', function (err, stdout, stderr) {
-    console.log(stdout);
-    console.log(stderr);
-    cb(err);
-  });
+gulp.task('scalajs', function() {
+  exec('sbt fullOptJS', { stdio: [0,1,2] });
+  return gulp.src(scalaJsFile)
+    .pipe(concat(mainModule))
+    .pipe(babel({ presets: babelPresets }))
+    .pipe(gulp.dest(distDir))
 });
 
 
 // ------------------------ Wrap parameter data ------------------------
 
-gulp.task('lobos-params', function() {
+gulp.task('params', function() {
   var paramData = fs.readFileSync(path.join(sharedResourceDir, rawParamFile), "base64");
   gulp.src(path.join(resourceDir, paramWrapperFile))
     .pipe(replace('%RAW_PARAMS%', paramData))
-    .pipe(gulp.dest(scalaJsDir));
+    .pipe(babel({ presets: babelPresets }))
+    .pipe(gulp.dest(distDir));
 });
 
 
-// ------------------------ Browser ------------------------
+// ------------------------ web ------------------------
 
-gulp.task('webpack-browser', ['lobos-params', 'scala-js'], function () {
+gulp.task('web', ['params', 'scalajs'], function () {
   var options = {
     target: 'web',
     output: {
@@ -87,31 +88,21 @@ gulp.task('webpack-browser', ['lobos-params', 'scala-js'], function () {
       lib: 'lobos'
     },
     module: {
-      loaders: [{ test: require.resolve('./'+scalaJsFile), loader: "expose?lobos" }]
+      loaders: [{ test: new RegExp(distDir + '/' + mainModule), loader: "expose?lobos" }]
     }
   };
-  return gulp.src(scalaJsFile)
+
+  return gulp.src(path.join(distDir, mainModule))
     .pipe(webpackStream(mergeOptions(webpackOptions, options)))
-    .pipe(concat('lobos-web.js'))
-    .pipe(gulp.dest(distDir))
-});
-
-
-// ------------------------ Node ------------------------
-
-gulp.task('webpack-node', ['lobos-params', 'scala-js'], function () {
-  var options = { target: 'node', externals: [nodeExternals()], output: { libraryTarget: 'commonjs2', lib: 'lobos' }, node: { global: true } };
-  return gulp.src(scalaJsFile)
-    .pipe(webpackStream(mergeOptions(webpackOptions, options)))
-    .pipe(concat('lobos-node.js'))
+    .pipe(concat(webFile))
     .pipe(gulp.dest(distDir))
 });
 
 
 // ------------------------ Clean ------------------------
 
-gulp.task('clean', [], function(cb) {
-  del([targetDir, distDir], { force: true }, cb);
+gulp.task('clean', [], function() {
+  del.sync([targetDir, distDir], { force: true });
 });
 
 
@@ -122,4 +113,4 @@ function mergeOptions(a, b) {
 }
 
 
-module.exports = { };
+module.exports = {};
