@@ -10,7 +10,7 @@ class JvmParams(path:String, codec:Codec=Codec.UTF8) extends SobolParams {
   override def getParams(dim:Int) = dimParams(dim - 2)
   override def maxDims = dimParams.length + 1
 
-  protected val dimParams = {
+  protected lazy val dimParams = {
     /* Open file and decompress if necessary */
     val gzipPattern = ".+\\.gz$".r
     def resource = getClass.getResourceAsStream(path)
@@ -28,13 +28,10 @@ class JvmParams(path:String, codec:Codec=Codec.UTF8) extends SobolParams {
 }
 
 
-package object data {
-
-//  import lobos._
- 
-  /** Implicit parameters available on import of this package */
-  //implicit val newJoeKuo21k = new JvmParams("/new-joe-kuo-6.21201.gz");
-  implicit object NewJoeKuo21k extends JvmParams("/new-joe-kuo-6.21201.gz")
+/** Implicit parameters available on import of this package */
+package object params {
+  implicit object NewJoeKuo1k extends JvmParams("/params/new-joe-kuo-6.1000.gz")
+  implicit object NewJoeKuo21k extends JvmParams("/params/new-joe-kuo-6.21201.gz")
 }
 
 

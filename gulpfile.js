@@ -20,10 +20,11 @@ require('expose-loader');
 
 // ------------------------ Build Params ------------------------
 
+var dfltParamName = 'new-joe-kuo-6.1000'; // will default to these params if none specified at runtime
+
 var targetDir = 'js/target';
 var resourceDir = 'js/src/main/resources';
-var sharedResourceDir = 'shared/src/main/resources';
-var rawParamFile = 'new-joe-kuo-6.21201.gz'; // loader expects joe/kuo format gzipped
+var paramDir = 'shared/src/main/resources/params';
 var paramWrapperFile = 'lobos-params.js';
 
 var scalaJsDir = targetDir + '/scala-2.11';
@@ -70,12 +71,29 @@ gulp.task('scalajs', function() {
 // ------------------------ Wrap parameter data ------------------------
 
 gulp.task('params', function() {
-  var paramData = fs.readFileSync(path.join(sharedResourceDir, rawParamFile), "base64");
   gulp.src(path.join(resourceDir, paramWrapperFile))
-    .pipe(replace('%RAW_PARAMS%', paramData))
+    .pipe(replace('%PARAMS_BY_ID%', paramsByIdStr()))
+    .pipe(replace('%DEFAULT_PARAMS%', dfltParamName))
     .pipe(babel({ presets: babelPresets }))
     .pipe(gulp.dest(distDir));
 });
+
+/* Generates the ParamMap object string to be injected into lobos-params.js */
+function paramsByIdStr() {
+  var content = fs.readdirSync(paramDir)
+    .map(filename => path.join(paramDir, filename))
+    .filter(filepath => fs.statSync(filepath).isFile())
+    .map(filepath => {
+      var filename = path.basename(filepath);
+      var data = fs.readFileSync(filepath, "base64");
+      var id = filename.replace(/\.gz$/, '');
+      var isGzip = filename.length != id.length;
+      return `"${id}": { data: "${data}", id: "${id}", src: "${filename}", gzip: ${isGzip} }`;
+    }).join(', ');
+
+  return `{ ${content} }`;
+}
+
 
 
 // ------------------------ web ------------------------

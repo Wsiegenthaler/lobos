@@ -15,9 +15,9 @@ Below are examples of 2-dimensional points drawn from Sobol and Uniform generato
 
 The generator uses the standard Scala ```Iterator``` interface, for example:
 ```scala
-import lobos.SobolSequence
+import lobos.Sobol
 
-val sequence = new SobolSequence(dims=2)
+val sequence = new Sobol(dims=2)
 val points = sequence.take(10)
 ```
 Each n-dimensional point in the sequence contains values between [0,1).  The sequence constructor optionally allows for user-provided initialization values as well as a way to cap sequence length which can improve performance when the number of points needed is low.

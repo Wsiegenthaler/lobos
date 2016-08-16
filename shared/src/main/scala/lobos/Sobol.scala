@@ -1,6 +1,6 @@
 package lobos
 
-import SobolSequence._
+import Sobol._
 
 import scala.math.{ceil, log, pow}
 
@@ -12,7 +12,7 @@ import scala.math.{ceil, log, pow}
  * @param params The parameters used to initialize the sequence. Default values are provided courtesy of Stephen Joe
  *               and Frances Kuo (see http://web.maths.unsw.edu.au/~fkuo/sobol) and support up to 21,201 dimensions
  */
-class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params:SobolParams)
+class Sobol(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params:SobolParams)
   extends Iterator[IndexedSeq[Double]] {
 
   val maxDims = params.maxDims
@@ -80,7 +80,7 @@ class SobolSequence(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit va
 }
 
 /** Static stuff */
-object SobolSequence {
+object Sobol {
 
   /** Maximum bits-per-dimension employed by this sequence (64bits per Long) */
   val maxBits = 64
