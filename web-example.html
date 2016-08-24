@@ -1,0 +1,121 @@
+<html>
+  <head>
+    <script src="lobos-standalone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.1/d3.js"></script>
+  </head>
+  <body>
+    <canvas id="sobol-canvas" width="460" height="460"></canvas>
+    <canvas id="uniform-canvas" width="460" height="460"></canvas>
+    <script>
+      (function() {
+        var pow = Math.pow, log = Math.log, floor = Math.floor, ceil = Math.ceil, min = Math.min, max = Math.max, PI = Math.PI, random = Math.random, log2 = (x) => log(x)/log(2);
+
+        var maxRate = pow(2, 16);
+        var maxPoints = pow(2, 18);
+        var fps = 33;
+
+        class PointCanvas {
+          constructor(seqFactory, canvasId) {
+            var canvas = document.getElementById(canvasId);
+            this.ctx = canvas.getContext('2d');
+            this.size = min(canvas.width, canvas.height);
+            this.seqFactory = seqFactory;
+
+            this.colorScaleIdx = 0;
+            this.colorScales = [
+              d3.interpolateCool, 
+              d3.interpolateWarm, 
+              d3.interpolateRainbow, 
+              (t) => d3.interpolatePlasma(1-t) ];
+
+            this.reset();
+          }
+
+          reset() {
+            this.seq = this.seqFactory();
+
+            this.clear();
+
+            var colorScales = this.colorScales, colorScaleCnt = colorScales.length;
+            this.colorScaleIdx = (this.colorScaleIdx + 1) % colorScaleCnt;
+          }
+
+          update(n, nStart) {
+            var points = this.seq.take(n);
+            this.draw(points, nStart);
+          }
+  
+          draw(data, nStart) {
+            var scale = d3.scaleLinear().domain([0,1]).range([0, this.size]);
+            var rScale = d3.scaleLog().base(2).domain([1, maxPoints]).range([this.size/80000, this.size/400000]);
+            
+            var xcolorNorm = function(i) {
+              var cycle1 = pow(2, 12);
+              var p = max(0, log2(i + cycle1))
+              return p - floor(p)
+            }
+            var colorNorm = d3.scalePow().exponent(.2).domain([0,maxPoints/80]).range([0, 1]);
+  
+            //var colorScale = d3.interpolateWarm;
+            //var colorScale = d3.interpolateRainbow;
+            //var colorScale = d3.interpolateViridis;
+            //var colorScale = d3.interpolatePlasma;
+            //var colorScale = (t) => d3.interpolatePlasma(1-t);
+            var colorScale = this.colorScales[this.colorScaleIdx];
+  
+            for (var i=0; i<data.length; i++) {
+              var point = data[i], n = nStart + i;
+              this.ctx.fillStyle = colorScale(colorNorm(n) % 1);
+              this.ctx.fill(this.circle(scale(point[0]), scale(point[1]), scale(rScale(n))));
+            }
+          }
+          
+          clear() {
+            var bg = new Path2D()
+            bg.rect(0, 0, this.size, this.size);
+            this.ctx.fillStyle = '#111';
+            this.ctx.fill(bg);
+          }
+
+          circle(x, y, r) {
+            var c = new Path2D();
+            c.arc(x, y, r, 0, PI*2, false);
+            return c;
+          }
+
+        }
+
+        
+        ////// main loop //////
+
+        var uniformFactory = () => new class {
+          take(n) {
+            var a = [];
+            while (a.length < n) a.push([random(), random()]);
+            return a;
+          }
+        }
+
+        var sobolFactory = () => new lobos.Sobol(2, { resolution: ceil(log2(maxPoints)) });
+        var sobolCanvas = new PointCanvas(sobolFactory, 'sobol-canvas');
+        var uniformCanvas = new PointCanvas(uniformFactory, 'uniform-canvas');
+
+        var nStart = 0, rateScale = d3.scaleLinear().domain([0,maxPoints]).range([10, maxRate]);
+        setInterval(() => {
+          var n = ceil(rateScale(nStart) / fps);
+          sobolCanvas.update(n, nStart);
+          uniformCanvas.update(n, nStart);
+          
+          nStart = nStart + n;
+          
+          if (nStart > maxPoints) {
+            sobolCanvas.reset();
+            uniformCanvas.reset();
+            nStart = 0;
+          }
+        }, 1000/fps-1);
+       
+      })()
+    </script>
+  </body>
+</html>
