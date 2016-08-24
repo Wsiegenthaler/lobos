@@ -7,8 +7,8 @@ For efficiency, *lobos* employs the recursive variant of the gray code optimizat
 
 Below are examples of 2-dimensional points drawn from Sobol and Uniform generators respectively. See the full animated visualization [here](http://wsiegenthaler.github.io/lobos/web-example.html).
 <p align="center">
-  <img src="http://wsiegenthaler.github.io/lobos/sobol.png" alt="Sobol" style="max-width: 49%">
-  <img src="http://wsiegenthaler.github.io/lobos/uniform.png" alt="Uniform" style="max-width: 49%">
+  <img src="http://wsiegenthaler.github.io/lobos/sobol.png" alt="Sobol" style="width: 49%">
+  <img src="http://wsiegenthaler.github.io/lobos/uniform.png" alt="Uniform" style="width: 49%">
 </p>
 
 
