@@ -33,7 +33,7 @@ var scalaJsFile = scalaJsDir + '/lobos-opt.js';
 var distDir = 'js/dist';
 
 var mainModule = 'lobos.js';
-var webFile = 'lobos-web.js';
+var standalone = 'lobos-standalone.js';
 
 var babelPresets = ['es2015'];
 
@@ -111,7 +111,7 @@ gulp.task('standalone', ['params', 'scalajs'], function () {
 
   return gulp.src(path.join(distDir, mainModule))
     .pipe(webpackStream(mergeOptions(webpackOptions, options)))
-    .pipe(concat(webFile))
+    .pipe(concat(standalone))
     .pipe(gulp.dest(distDir))
 });
 
