@@ -33,8 +33,8 @@ var lobos = require('lobos')
 
 var dims = 2
 var options = { params: 'new-joe-kuo-6.1000', resolution: 32 } // *optional*
-val sequence = new lobos.Sobol(dims, options)
-val points = sequence.take(10)
+var sequence = new lobos.Sobol(dims, options)
+var points = sequence.take(10)
 ```
 
 
@@ -56,7 +56,7 @@ Be sure to replace ```my-project``` with the name of your project as configured 
 #### Javascript
 *lobos* is available via npm and should work with webpack/browserify:
 ```shell
-$ npm install --save lobos
+npm install --save lobos
 ```
 
 For legacy web projects a self-contained script can be built by following the Javascript build procedure. If not building `lobos` yourself, the standalone script can be found in the `node_modules/lobos/js/dist` directory of your project.
@@ -66,12 +66,12 @@ For legacy web projects a self-contained script can be built by following the Ja
 
 #### Scala
 ```shell
-$ sbt package 
+sbt package 
 ```
 
 #### Javascript
 ```shell
-$ gulp build
+gulp build
 ```
 
 See `./js/dist` for build output:
