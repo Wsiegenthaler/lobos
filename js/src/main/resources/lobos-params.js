@@ -14,16 +14,15 @@ import b64 from 'base64-js';
 
 
 /* Decodes base64 and gunzips the parameter data */
-export function decode(paramId) {
-  var entry = rawParamsById[paramId || dfltParamId];
+export function decode(params) {
+  if (!params) throw Error('[lobos-params] decode(..) must be passed the key of the parameters to load!');
+  var entry = rawParamsMap[params];
+  if (!entry) throw Error('[lobos-params] decode(..) unable to locate parameters for params = "' + params + '"!');
   var bytes = b64.toByteArray(entry.data);
   if (entry.gzip) bytes = gzip.unzip(bytes, {});
   var string = bytes.reduce(function(prev, cur) { return prev + String.fromCharCode(cur) }, '');
   return string;
 }
 
-/* Default 'paramId' to load if none specified at runtime */
-const dfltParamId = "%DEFAULT_PARAMS%";
-
-/* Gzipped and base64-ed raw parameter data keyed by 'paramId' (the extension stripped filename) */
-const rawParamsById = %PARAMS_BY_ID%;
+/* Gzipped and base64-ed raw parameter data keyed by 'params' (the extension stripped filename) */
+const rawParamsMap = %PARAMS_BY_ID%;

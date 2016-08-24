@@ -12,6 +12,8 @@ var print = require('gulp-print');
 var concat = require('gulp-concat');
 var del = require('del');
 
+var connect = require('gulp-connect');
+
 var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 
@@ -19,8 +21,6 @@ require('expose-loader');
 
 
 // ------------------------ Build Params ------------------------
-
-var dfltParamName = 'new-joe-kuo-6.1000'; // will default to these params if none specified at runtime
 
 var targetDir = 'js/target';
 var resourceDir = 'js/src/main/resources';
@@ -54,7 +54,7 @@ var webpackOptions = {
 
 // ------------------------ Build all ------------------------
 
-gulp.task('build', ['clean', 'scalajs', 'params', 'web'], function() { });
+gulp.task('build', ['clean', 'scalajs', 'params', 'standalone'], function() { });
 
 
 // ------------------------ ScalaJS ------------------------
@@ -73,7 +73,6 @@ gulp.task('scalajs', function() {
 gulp.task('params', function() {
   gulp.src(path.join(resourceDir, paramWrapperFile))
     .pipe(replace('%PARAMS_BY_ID%', paramsByIdStr()))
-    .pipe(replace('%DEFAULT_PARAMS%', dfltParamName))
     .pipe(babel({ presets: babelPresets }))
     .pipe(gulp.dest(distDir));
 });
@@ -96,9 +95,9 @@ function paramsByIdStr() {
 
 
 
-// ------------------------ web ------------------------
+// ------------------------ standalone ------------------------
 
-gulp.task('web', ['params', 'scalajs'], function () {
+gulp.task('standalone', ['params', 'scalajs'], function () {
   var options = {
     target: 'web',
     output: {
@@ -116,15 +115,21 @@ gulp.task('web', ['params', 'scalajs'], function () {
     .pipe(gulp.dest(distDir))
 });
 
+// ------------------------ demo-server ------------------------
 
-// ------------------------ Clean ------------------------
+gulp.task('demo-server', [], function() {
+  connect.server({ root: ['.'], port: 8000, livereload: false });
+});
+
+
+// ------------------------ clean ------------------------
 
 gulp.task('clean', [], function() {
   del.sync([targetDir, distDir], { force: true });
 });
 
 
-// ------------------------ Util ------------------------
+// ------------------------ util ------------------------
 
 function mergeOptions(a, b) {
   return lo.mergeWith(lo.cloneDeep(a), b, function(c, d) { return lo.isArray(c) && lo.isArray(d) ? c.concat(d) : undefined });

@@ -1,6 +1,6 @@
 {
   "name": "lobos",
-  "version": "0.9.20",
+  "version": "0.9.22",
   "description": "Sobol sequences for Scala and Javascript",
   "devDependencies": {
     "babel-loader": "^6.2.4",
@@ -10,6 +10,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.0.0",
     "gulp-print": "^2.0.1",
     "gulp-replace": "^0.5.4",
     "lodash": "^4.14.0",
@@ -26,6 +27,7 @@
   "files": [
     "js/dist/lobos.js",
     "js/dist/lobos-params.js",
+    "js/dist/lobos-standalone.js",
     "README.md",
     "LICENSE"
   ]

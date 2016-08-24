@@ -8,17 +8,15 @@ import scala.math.{ceil, log, pow}
  * A low-discrepency Sobol sequence generator.
  *
  * @param dims The number of dimensions per point.
- * @param maxLength The maximum expected length of the sequence. This determines the number of direction values used per dimension.
+ * @param resolution The resolution of the sequence in bits. This determines the number of direction values used to compute each dimension
+ * and thus the maximum length of the sequence (e.g. 63 bits will provide a sequence of 2^63 elements).
  * @param params The parameters used to initialize the sequence. Default values are provided courtesy of Stephen Joe
  *               and Frances Kuo (see http://web.maths.unsw.edu.au/~fkuo/sobol) and support up to 21,201 dimensions
  */
-class Sobol(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params:SobolParams)
+class Sobol(dims:Int, resolution:Byte=maxBits)(implicit val params:SobolParams)
   extends Iterator[IndexedSeq[Double]] {
 
   val maxDims = params.maxDims
-
-  /* Number of bits per dimension used to compute the sequence (more bits, longer sequences) */
-  val bits = bitsForVals(maxLength)
 
   /* Number of samples returned thus far */
   var count = 0
@@ -27,24 +25,24 @@ class Sobol(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params
   var lastX:Option[IndexedSeq[Long]] = None
 
   /** Sanity checks */
-  require(maxLength <= valsForBits(maxBits), s"Sobol sequence can be no longer than 2^$maxBits.")
+  require(resolution > 0 && resolution <= maxBits, s"Sobol sequence bit resolution must be between 1 and $maxBits.")
   require(dims <= params.maxDims, s"Sobol sequence can have a max of ${params.maxDims} dimensions.")
 
   /** Initialize direction values for each dimension (direction/index tuples) */
   val directionsByDim = (1 to dims) map {
-    case 1 => (1 to bits) map { b => 1L << (bits - b) }
+    case 1 => (1 to resolution) map { b => 1L << (resolution - b) }
     case dim => {
       /* Import the parameters needed to prepare this dimension's direction vector */
       val p = params.getParams(dim)
       import p._
 
       /* Shift initial directions */
-      val dirs = Array.fill(bits) { 0L }
+      val dirs = Array.fill(resolution) { 0L }
       for (i <- 1 to s)
-        dirs(i - 1) = m(i - 1) << (bits - i)
+        dirs(i - 1) = m(i - 1) << (resolution - i)
 
       /* Compute remaining directions */
-      for (i <- s + 1 to bits) {
+      for (i <- s + 1 to resolution) {
         dirs(i - 1) = dirs(i - s - 1) ^ (dirs(i - s - 1) >> s)
 
         for (k <- 1 to s - 1)
@@ -54,6 +52,9 @@ class Sobol(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params
       dirs.toIndexedSeq
     }
   } zipWithIndex
+
+  /** The maximum expected length of the sequence as determined by the resolution */
+  val maxLength = valsForBits(resolution)
 
   /** Will produce up to 'maxLength' values */
   override def hasNext = count < maxLength
@@ -75,16 +76,16 @@ class Sobol(dims:Int, maxLength:Long=pow(2, maxBits).toLong)(implicit val params
     lastX = Some(x)
 
     /* Scale and return */
-    x.map(_.toDouble / pow(2, bits))
+    x.map(_.toDouble / pow(2, resolution))
   }
 }
 
 /** Static stuff */
 object Sobol {
 
-  /** Maximum bits-per-dimension employed by this sequence (64bits per Long) */
-  val maxBits = 64
-
+  /** Maximum bits-per-dimension employed by this sequence (64 bits per Long) */
+  val maxBits:Byte = 63
+  
   /** Computes minimum bits needed to represent 'n' values */
   def bitsForVals(n:Long) = n match { case n if (n < 1) => 0; case 1 => 1; case n => ceil(log(n) / log(2)).toInt }
 

@@ -6,7 +6,7 @@ import scala.scalajs.js.annotation._
 
 @js.native
 trait LobosParamsWrapper extends js.Object {
-  def decode(paramId:Option[String]):String = js.native
+  def decode(params:String):String = js.native
 }
 
 @js.native
@@ -14,29 +14,24 @@ object LobosGlobalScope extends js.GlobalScope {
   val LobosParams:LobosParamsWrapper = js.native
 }
 
-class JsParams(paramId:Option[String]=None) extends SobolParams {
+class JsParams(params:String) extends SobolParams {
   protected val module = LobosGlobalScope.LobosParams
   override def getParams(dim:Int) = dimParams(dim - 2)
   override def maxDims = dimParams.length + 1
-  lazy protected val dimParams = module.decode(paramId).split("\n").drop(1).map(_.split(" +")).map(v => DimensionParams(v(0).toInt, v(2).toLong, v.drop(3).map(_.toLong)))
+  lazy protected val dimParams = module.decode(params)
+    .split("\n").drop(1).map(_.split(" +"))
+    .map(v => DimensionParams(v(0).toInt, v(2).toLong, v.drop(3).map(_.toLong)))
 }
 
+/* Caches the raw param data so we don't unpack it every time */
 object ParamCache {
-  protected val cache = scala.collection.mutable.HashMap.empty[Option[String], JsParams]
-  def apply(paramId:Option[String]=None) = cache.getOrElseUpdate(paramId, new JsParams(paramId))
+  protected val cache = scala.collection.mutable.HashMap.empty[String, JsParams]
+  def apply(params:String) = cache.getOrElseUpdate(params, new JsParams(params))
 }
 
-@JSExport("lobos.Sobol")
-class JsSobol(dims:Int, paramId:Option[String]) {
-  protected val params = ParamCache(paramId)
-  protected val seq = new Sobol(dims)(params)
-
-  @JSExport
-  def next = js.Array(seq.next():_*)
-
-  @JSExport
-  def take(n:Int):js.Array[js.Array[Double]] = js.Array(seq.take(n).map(js.Array(_:_*)).toArray:_*)
-
-  @JSExport
-  def count = seq.count
+/** Helper for providing scala APIs to javascript using the conventional javascript-style "options" object */
+object OptionsHelper {
+  def option[T, O <: js.Object](options:js.UndefOr[O])(get:(O)=>js.UndefOr[T], dflt:T):T = options.toOption match {
+    case Some(opts) => get(opts).getOrElse(dflt); case None => dflt
+  }
 }
