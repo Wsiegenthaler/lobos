@@ -26,19 +26,3 @@ class JvmParams(path:String, codec:Codec=Codec.UTF8) extends SobolParams {
     }
   } toArray
 }
-
-
-/** Implicit parameters available on import of this package */
-package object params {
-  implicit object NewJoeKuo1k extends JvmParams("/params/new-joe-kuo-6.1000.gz")
-  implicit object NewJoeKuo21k extends JvmParams("/params/new-joe-kuo-6.21201.gz")
-}
-
-
-package object breeze {
-  
-  import _root_.breeze.linalg.{DenseMatrix, DenseVector}
-
-  implicit def indexedSeq2Vector(seq:IndexedSeq[Double]):DenseVector[Double] = DenseVector(seq:_*)
-  implicit def indexedSeqIterator2Matrix(iterator:Iterator[IndexedSeq[Double]]):DenseMatrix[Double] = DenseMatrix(iterator.toSeq:_*)
-}
