@@ -19,7 +19,7 @@ Each n-dimensional point in the sequence contains values between [0,1).  The seq
 
 #### Scala
 
-Add `lobos` to your sbt dependencies:
+Add *lobos* to your sbt dependencies:
 ```scala
 libraryDependencies += "com.github.wsiegenthaler" % "lobos_2.11" % "0.9.22"
 
@@ -42,7 +42,7 @@ val points = sequence.take(10)
 npm install --save lobos
 ```
 
-For legacy web projects, a standalone version of `lobos` can be built by following the Javascript build procedure and using `js/dist/lobos-standalone.js`. This version is also included with the npm module (see `node_modules/lobos/js/dist`).
+For legacy web projects, a standalone version of *lobos* can be built by following the Javascript build procedure and using `js/dist/lobos-standalone.js`. This version is also included with the npm module (see `node_modules/lobos/js/dist`).
 
 To draw from the sequence:
 ```javascript
@@ -54,7 +54,7 @@ var sequence = new lobos.Sobol(dims, options)
 var points = sequence.take(10)
 ```
 
-To conserve resources in browser environments, the javascript version of `lobos` defaults to the `new-joe-kuo-6.1000` initialization params which only support up to 1000 dimensions. Specify `new-joe-kuo-6.21201` for more.
+To conserve resources in browser environments, the javascript version of *lobos* defaults to the `new-joe-kuo-6.1000` initialization params which only support up to 1000 dimensions. Specify `new-joe-kuo-6.21201` for more.
 
 
 ## Building
