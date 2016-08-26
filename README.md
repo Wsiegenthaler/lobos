@@ -14,52 +14,47 @@ Below are examples of 2-dimensional points drawn from Sobol and Uniform generato
 
 ## Usage
 
-Each n-dimensional point in the sequence contains values between [0,1).  The sequence constructor optionally allows for user-provided initialization parameters as well as a way to cap sequence length which can improve performance when the number of points needed is low.
+Each n-dimensional point in the sequence contains values between [0,1).  The sequence constructor optionally allows for user-provided initialization parameters as well as a way to cap sequence resolution to improve performance when the number of points needed is known in advance (see `params` and `resolution` options).
 
-The following examples take the first 10 points from a 2-dimensional sequence:
 
 #### Scala
+
+Add `lobos` to your sbt dependencies:
+```scala
+libraryDependencies += "com.github.wsiegenthaler" % "lobos_2.11" % "0.9.22"
+
+resolvers += "releases" at "https://oss.sonatype.org/content/repositories/releases"
+```
+
+To obtain the first 10 points from a 3-dimensional sequence:
 ```scala
 import lobos.Sobol
 import lobos.params.NewJoeKuo21k // initialization params
 
-val sequence = new Sobol(dims=2)
+val sequence = new Sobol(dims=3)
 val points = sequence.take(10)
 ```
 
 #### Javascript
-```javascript
-var lobos = require('lobos')
 
-var dims = 2
-var options = { params: 'new-joe-kuo-6.1000', resolution: 32 } // *optional*
-var sequence = new lobos.Sobol(dims, options)
-var points = sequence.take(10)
-```
-
-
-## Install
-
-#### Scala
-Since it's currently not available as a published binary artifact, the recommended way to integrate *lobos* is to allow SBT to automatically checkout and build the source with your project.  This can easily be configured with your project's ```project/Build.scala``` definition:
-
-```scala
-import sbt._
-
-object MyBuild extends Build {
-  lazy val project = Project("my-project", file("."))
-    .dependsOn(RootProject(uri("git://github.com/wsiegenthaler/lobos.git")))
-}
-```
-Be sure to replace ```my-project``` with the name of your project as configured in ```build.sbt``` and to use SBT 0.11 or greater.
-
-#### Javascript
 *lobos* is available via npm and should work with webpack/browserify:
 ```shell
 npm install --save lobos
 ```
 
-For legacy web projects a self-contained script can be built by following the Javascript build procedure. If not building `lobos` yourself, the standalone script can be found in the `node_modules/lobos/js/dist` directory of your project.
+For legacy web projects, a standalone version of `lobos` can be built by following the Javascript build procedure and using `js/dist/lobos-standalone.js`. This version is also included with the npm module (see `node_modules/lobos/js/dist`).
+
+To draw from the sequence:
+```javascript
+var lobos = require('lobos') // unecessary for standalone version
+
+var dims = 3
+var options = { params: 'new-joe-kuo-6.21201', resolution: 32 } // *optional*
+var sequence = new lobos.Sobol(dims, options)
+var points = sequence.take(10)
+```
+
+To conserve resources in browser environments, the javascript version of `lobos` defaults to the `new-joe-kuo-6.1000` initialization params which only support up to 1000 dimensions. Specify `new-joe-kuo-6.21201` for more.
 
 
 ## Building
@@ -74,7 +69,7 @@ sbt package
 gulp build
 ```
 
-See `./js/dist` for build output:
+See `js/dist/` for build output:
 * `lobos.js` - main module
 * `lobos-params.js` - parameter module
 * `lobos-standalone.js` - self-contained web-ready with 'lobos' exported as global

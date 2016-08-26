@@ -12,7 +12,8 @@ lazy val root = project.in(file(".")).
 lazy val lobos = crossProject.in(file(".")).
   settings(
     name := "lobos",
-    version := "0.9",
+    organization := "com.github.wsiegenthaler",
+    version := "0.9.22",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
      "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
@@ -22,11 +23,34 @@ lazy val lobos = crossProject.in(file(".")).
   ).
   jvmSettings(
     unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "shared" / "src" / "main" / "resources",
-     libraryDependencies  ++= Seq(
+    libraryDependencies  ++= Seq(
       "org.scalanlp" %% "breeze" % "0.12",
       "org.scalanlp" %% "breeze-natives" % "0.12",
       "org.scalanlp" %% "breeze-viz" % "0.12"
-    )
+    ),
+    publishMavenStyle := true,
+    publishTo := {
+      val nexus = "https://oss.sonatype.org"
+      if (isSnapshot.value) Some("snapshots" at nexus + "/content/repositories/snapshots")
+      else Some("releases" at nexus + "/service/local/staging/deploy/maven2")
+    },
+    publishArtifact in Test := false,
+    pomIncludeRepository := { _ => false },
+    licenses := Seq("BSD-style" -> url("https://opensource.org/licenses/BSD-3-Clause")),
+    homepage := Some(url("http://github.com/wsiegenthaler/lobos")),
+    pomExtra := (
+      <scm>
+        <connection>https://github.com/wsiegenthaler/lobos.git</connection>
+        <developerConnection>git@github.com:wsiegenthaler/lobos.git</developerConnection>
+        <url>https://github.com/wsiegenthaler/lobos</url>
+      </scm>
+      <developers>
+        <developer>
+          <id>wsiegenthaler</id>
+          <name>Weston Siegenthaler</name>
+          <url>http://github.com/wsiegenthaler</url>
+        </developer>
+      </developers>)
   ).
   jsSettings(
     libraryDependencies  ++= Seq(),
