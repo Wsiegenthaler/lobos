@@ -1,12 +1,13 @@
 import org.scalajs.core.tools.javascript.OutputMode._
 
-scalaVersion in ThisBuild := "2.11.8"
+scalaVersion in ThisBuild := "2.12.1"
 
 lazy val root = project.in(file(".")).
   aggregate(lobosJS, lobosJVM).
   settings(
     publish := {},
-    publishLocal := {}
+    publishLocal := {},
+    crossScalaVersions := Seq("2.12.1", "2.11.8")
   )
 
 lazy val lobos = crossProject.in(file(".")).
@@ -14,7 +15,7 @@ lazy val lobos = crossProject.in(file(".")).
     name := "lobos",
     organization := "com.github.wsiegenthaler",
     version := "0.9.23",
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.1",
     resolvers ++= Seq(
      "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
      "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
@@ -24,9 +25,9 @@ lazy val lobos = crossProject.in(file(".")).
   jvmSettings(
     unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "shared" / "src" / "main" / "resources",
     libraryDependencies  ++= Seq(
-      "org.scalanlp" %% "breeze" % "0.12",
-      "org.scalanlp" %% "breeze-natives" % "0.12",
-      "org.scalanlp" %% "breeze-viz" % "0.12"
+      "org.scalanlp" %% "breeze" % "0.13",
+      "org.scalanlp" %% "breeze-natives" % "0.13",
+      "org.scalanlp" %% "breeze-viz" % "0.13"
     ),
     publishMavenStyle := true,
     publishTo := {
@@ -53,6 +54,7 @@ lazy val lobos = crossProject.in(file(".")).
       </developers>)
   ).
   jsSettings(
+    publish := {},
     libraryDependencies  ++= Seq(),
     scalaJSOutputMode := ECMAScript6,
     skip in packageJSDependencies := false, // generate dependency file (lobos-jsdeps.js)
