@@ -1,4 +1,9 @@
 # lobos
+
+[![Build Status](https://travis-ci.org/Wsiegenthaler/lobos.svg?branch=master)](https://travis-ci.org/Wsiegenthaler/lobos)
+[![npm version](https://badge.fury.io/js/lobos.svg)](https://www.npmjs.com/package/lobos)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 *A Sobol sequence generator for Scala and Javascript*
 
 *lobos* provides Sobol low-discrepancy quasirandom sequences which, when used for integration, can cover a domain evenly with as little as a few points and will continue to uniformly fill the space as more points are added.
