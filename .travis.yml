@@ -13,6 +13,9 @@ jdk: oraclejdk8
 script: sbt ++$TRAVIS_SCALA_VERSION package
 
 install:
+  - echo 'hello world'
+  - echo $TRAVIS_SCALA_VERSION
+  - echo $JS_SCALA_VERSION
   - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
       then nvm install; 
     fi
