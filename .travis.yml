@@ -15,10 +15,10 @@ script: sbt ++$TRAVIS_SCALA_VERSION package
 
 install:
   - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
-      then nvm install $NODE_VERSION && npm install; # prereqs for js build
+      then nvm install $NODE_VERSION && npm install;
     fi
 
 before_script:
   - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ];
-      then gulp build; # build js
+      then gulp build;
     fi
