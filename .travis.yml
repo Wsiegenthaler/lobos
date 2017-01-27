@@ -6,16 +6,19 @@ scala:
 
 env:
   global:
-    - JS_SCALA_VERSION=2.12.1 # scala build for js transpile
+    - NODE_VERSION=6.9.2 # node version for js build
+    - JS_SCALA_VERSION=2.12.1 # scala version used for js build
 
 jdk: oraclejdk8
 
 script: sbt ++$TRAVIS_SCALA_VERSION package
 
 install:
-  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; \
-      then nvm install && npm install; \
+  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
+      then nvm install $NODE_VERSION && npm install; # prereqs for js build
     fi
 
-after_script:
-  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; then gulp build; fi
+before_script:
+  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ];
+      then gulp build; # build js
+    fi
