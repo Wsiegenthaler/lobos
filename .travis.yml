@@ -6,6 +6,7 @@ scala:
 
 env:
   global:
+    - NODE_VERSION=6.9.2
     - JS_SCALA_VERSION=2.12.1 # scala build for js transpile
 
 jdk: oraclejdk8
@@ -17,10 +18,9 @@ install:
   - echo $TRAVIS_SCALA_VERSION
   - echo $JS_SCALA_VERSION
   - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
-      then nvm install; 
+      then nvm install $NODE_VERSION && npm install; 
     fi
 
-      #then nvm install && npm install; 
 
 #after_script:
 #  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; then gulp build; fi
