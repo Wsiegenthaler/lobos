@@ -13,9 +13,11 @@ jdk: oraclejdk8
 script: sbt ++$TRAVIS_SCALA_VERSION package
 
 install:
-  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; \
-      then nvm install && npm install; \
+  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
+      then nvm install; 
     fi
 
-after_script:
-  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; then gulp build; fi
+      #then nvm install && npm install; 
+
+#after_script:
+#  - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; then gulp build; fi
