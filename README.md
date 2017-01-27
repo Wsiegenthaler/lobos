@@ -26,7 +26,7 @@ Each n-dimensional point in the sequence contains values between [0,1).  The seq
 
 Add *lobos* to your sbt dependencies:
 ```scala
-libraryDependencies += "com.github.wsiegenthaler" % "lobos_2.12" % "0.9.23"
+libraryDependencies += "com.github.wsiegenthaler" % "lobos_2.12" % "0.9.24"
 
 resolvers += "releases" at "https://oss.sonatype.org/content/repositories/releases"
 ```
