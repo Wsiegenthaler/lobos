@@ -6,7 +6,7 @@
 
 *A Sobol sequence generator for Scala and Javascript*
 
-*lobos* provides Sobol low-discrepancy quasirandom sequences which, when used for integration, can cover a domain evenly with as little as a few points and will continue to uniformly fill the space as more points are added.
+*lobos* provides Sobol low-discrepancy quasirandom sequences which are useful for integration and other tasks. The sequence can cover a domain evenly with as little as a few points and will continue to progressively fill the space as more points are added.
 
 For efficiency, *lobos* employs the recursive variant of the gray code optimization proposed by *Antonov-Saleev*.  Initialization values supporting up to 21,201 dimensions are provided courtesy of Stephen Joe and Frances Kuo (found [here](http://web.maths.unsw.edu.au/~fkuo/sobol)).
 
