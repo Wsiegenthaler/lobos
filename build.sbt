@@ -14,7 +14,7 @@ lazy val lobos = crossProject.in(file(".")).
   settings(
     name := "lobos",
     organization := "com.github.wsiegenthaler",
-    version := "0.9.24",
+    version := "0.10.0",
     scalaVersion := "2.13.1",
     resolvers ++= Seq(
      "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
