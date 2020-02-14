@@ -83,8 +83,8 @@ class Sobol(dims:Int, resolution:Byte=maxBits)(implicit val params:SobolParams)
 /** Static stuff */
 object Sobol {
 
-  /** Maximum bits-per-dimension employed by this sequence (64 bits per Long) */
-  val maxBits:Byte = 63
+  /** Maximum bits-per-dimension employed by this sequence (`Double` significand is 53 bits) */
+  val maxBits:Byte = 53
   
   /** Computes minimum bits needed to represent 'n' values */
   def bitsForVals(n:Long) = n match { case n if (n < 1) => 0; case 1 => 1; case n => ceil(log(n) / log(2)).toInt }
