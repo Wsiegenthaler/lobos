@@ -1,13 +1,14 @@
 language: scala
 
 scala:
-  - 2.12.1
-  - 2.11.8
+  - 2.13.1
+  - 2.12.10
+  - 2.11.11
 
 env:
   global:
     - NODE_VERSION=6.9.2 # node version for js build
-    - JS_SCALA_VERSION=2.12.1 # scala version used for js build
+    - JS_SCALA_VERSION=2.13.1 # scala version used for js build
 
 jdk: oraclejdk8
 
