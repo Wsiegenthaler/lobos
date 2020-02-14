@@ -29,7 +29,7 @@ class Sobol(dims:Int, resolution:Byte=maxBits)(implicit val params:SobolParams)
   require(dims <= params.maxDims, s"Sobol sequence can have a max of ${params.maxDims} dimensions.")
 
   /** Initialize direction values for each dimension (direction/index tuples) */
-  val directionsByDim = (1 to dims) map {
+  val directionsByDim = (1 to dims).map {
     case 1 => (1 to resolution) map { b => 1L << (resolution - b) }
     case dim => {
       /* Import the parameters needed to prepare this dimension's direction vector */
@@ -51,7 +51,7 @@ class Sobol(dims:Int, resolution:Byte=maxBits)(implicit val params:SobolParams)
 
       dirs.toIndexedSeq
     }
-  } zipWithIndex
+  }.zipWithIndex
 
   /** The maximum expected length of the sequence as determined by the resolution */
   val maxLength = valsForBits(resolution)

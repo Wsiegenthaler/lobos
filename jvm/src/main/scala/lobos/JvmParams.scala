@@ -24,5 +24,5 @@ class JvmParams(path:String, codec:Codec=Codec.UTF8) extends SobolParams {
       val values = line.split("\\s+")
       DimensionParams(values(0).toInt, values(2).toLong, values.slice(3, values.length).map(_.toLong))
     }
-  } toArray
+  }.toArray
 }
