@@ -3,7 +3,7 @@ package lobos
 import scala.scalajs.js
 import scala.scalajs.js.annotation._
 
-@JSExport("lobos.Sobol")
+@JSExportTopLevel("Sobol")
 class JsSobol(dims:Int, options:js.UndefOr[JsSobolOptions]) {
 
   import OptionsHelper._
@@ -27,7 +27,6 @@ object JsSobol {
   val dfltParamId:String = "new-joe-kuo-6.1000"
 }
 
-@ScalaJSDefined
 trait JsSobolOptions extends js.Object {
   val params:js.UndefOr[String]
   val resolution:js.UndefOr[Byte]

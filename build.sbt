@@ -60,7 +60,7 @@ lazy val lobos = crossProject.in(file(".")).
     skip in packageJSDependencies := false, // generate dependency file (lobos-jsdeps.js)
     scalaJSOutputWrapper := // bridges gap between scalajs output and commonjs needed by webpack
       ("var g = global || window || {}, __ScalaJSEnv = { global: g, exportsNamespace: {} }; g.LobosParams = require('./lobos-params.js'); (function() {",
-       "}).call(module.exports); module.exports = __ScalaJSEnv.exportsNamespace.lobos;")
+       "}).call(module.exports); module.exports = __ScalaJSEnv.exportsNamespace;")
   )
 
 lazy val lobosJVM = lobos.jvm
