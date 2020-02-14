@@ -27,7 +27,7 @@ var resourceDir = 'js/src/main/resources';
 var paramDir = 'shared/src/main/resources/params';
 var paramWrapperFile = 'lobos-params.js';
 
-var scalaJsDir = targetDir + '/scala-2.12';  // Always build js using the latest scala
+var scalaJsDir = targetDir + '/scala-2.13';  // Always build js using the latest scala
 var scalaJsFile = scalaJsDir + '/lobos-opt.js';
 
 var distDir = 'js/dist';
