@@ -16,7 +16,7 @@ script: sbt ++$TRAVIS_SCALA_VERSION package
 
 install:
   - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
-      then nvm install $NODE_VERSION && npm install;
+      then nvm install $NODE_VERSION && npm install --ignore-scripts;
     fi
 
 before_script:
