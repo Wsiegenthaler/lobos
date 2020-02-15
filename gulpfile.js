@@ -140,4 +140,4 @@ const merge = (a, b) => lo.mergeWith(lo.cloneDeep(a), b, (c, d) => lo.isArray(c)
 
 // ------------------------ export tasks ------------------------
 
-module.exports = { build }
+module.exports = { build, clean }

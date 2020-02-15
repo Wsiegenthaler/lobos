@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "gulp build",
+    "clean": "gulp clean",
     "prepublish": "npm run build"
   },
   "main": "js/dist/lobos.js",
