@@ -4,8 +4,8 @@
   "description": "Sobol sequences for Scala and Javascript",
   "license": "BSD-3-Clause",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/wsiegenthaler/lobos.git"
+    "type": "git",
+    "url": "https://github.com/wsiegenthaler/lobos.git"
   },
   "devDependencies": {
     "babel-loader": "^8.0.6",

@@ -27,6 +27,7 @@ object JsSobol {
   val dfltParamId:String = "new-joe-kuo-6.1000"
 }
 
+@js.native
 trait JsSobolOptions extends js.Object {
   val params:js.UndefOr[String]
   val resolution:js.UndefOr[Byte]
