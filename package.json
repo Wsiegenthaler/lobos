@@ -1,6 +1,6 @@
 {
   "name": "lobos",
-  "version": "0.9.24",
+  "version": "0.10.0",
   "description": "Sobol sequences for Scala and Javascript",
   "devDependencies": {
     "babel-loader": "^8.0.6",
