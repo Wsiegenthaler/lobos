@@ -1,3 +1,6 @@
+// Required while still using scalajs 0.6.x
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+
 import org.scalajs.core.tools.javascript.OutputMode._
 
 scalaVersion in ThisBuild := "2.13.1"
@@ -10,7 +13,8 @@ lazy val root = project.in(file(".")).
     crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.11")
   )
 
-lazy val lobos = crossProject.in(file(".")).
+lazy val lobos = crossProject(JSPlatform, JVMPlatform).
+  in(file(".")).
   settings(
     name := "lobos",
     organization := "com.github.wsiegenthaler",
