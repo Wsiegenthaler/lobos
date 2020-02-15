@@ -9,20 +9,24 @@
  * dimensions. Truncate the parameter file to significantly reduce
  * filesize and startup time when high dimensional sequences aren't needed.
  */
-import gzip from 'gzip-js';
-import b64 from 'base64-js';
-
+import gzip from 'gzip-js'
+import b64 from 'base64-js'
 
 /* Decodes base64 and gunzips the parameter data */
-export function decode(params) {
-  if (!params) throw Error('[lobos-params] decode(..) must be passed the key of the parameters to load!');
-  var entry = rawParamsMap[params];
-  if (!entry) throw Error('[lobos-params] decode(..) unable to locate parameters for params = "' + params + '"!');
-  var bytes = b64.toByteArray(entry.data);
-  if (entry.gzip) bytes = gzip.unzip(bytes, {});
-  var string = bytes.reduce(function(prev, cur) { return prev + String.fromCharCode(cur) }, '');
-  return string;
+export function load(label) {
+  if (!label) throw Error(`[lobos-params] decode(..) must be passed the key of the parameters to load!`)
+
+  // Lookup param data in map
+  let entry = rawParamsMap[label]
+  if (!entry) throw Error(`[lobos-params] decode(..) unable to locate parameters for label "${label}"!`)
+
+  // Convert from base64 and decompress
+  let bytes = b64.toByteArray(entry.data)
+  if (entry.gzip) bytes = gzip.unzip(bytes, {})
+
+  // Convert param data to string
+  return bytes.reduce((prev, cur) => prev + String.fromCharCode(cur), '')
 }
 
 /* Gzipped and base64-ed raw parameter data keyed by 'params' (the extension stripped filename) */
-const rawParamsMap = %PARAMS_BY_ID%;
+const rawParamsMap = %PARAMS_BY_ID%
