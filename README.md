@@ -79,6 +79,7 @@ See `js/dist/` for build output:
 * `lobos-params.js` - parameter module
 * `lobos-standalone.js` - self-contained web-ready with 'lobos' exported as global
 
+Note: Don't forget to `npm install` javascript dependencies before initial build.
 
 ## References
 
