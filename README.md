@@ -66,7 +66,7 @@ To conserve resources in browser environments, the javascript version of *lobos*
 
 #### Scala
 ```shell
-sbt package 
+sbt +lobosJVM/package 
 ```
 
 #### Javascript

@@ -12,7 +12,7 @@ env:
 
 jdk: openjdk8
 
-script: sbt ++$TRAVIS_SCALA_VERSION package
+script: sbt ++$TRAVIS_SCALA_VERSION lobosJVM/package
 
 install:
   - if [ "$TRAVIS_SCALA_VERSION" == "$JS_SCALA_VERSION" ]; 
