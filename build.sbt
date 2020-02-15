@@ -35,6 +35,7 @@ lazy val lobos = crossProject.in(file(".")).
       if (isSnapshot.value) Some("snapshots" at nexus + "/content/repositories/snapshots")
       else Some("releases" at nexus + "/service/local/staging/deploy/maven2")
     },
+    useGpg := false,
     publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },
     licenses := Seq("BSD-style" -> url("https://opensource.org/licenses/BSD-3-Clause")),
