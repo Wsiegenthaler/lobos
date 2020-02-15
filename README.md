@@ -71,7 +71,7 @@ sbt +lobosJVM/package
 
 #### Javascript
 ```shell
-gulp build
+npm run build
 ```
 
 See `js/dist/` for build output:
