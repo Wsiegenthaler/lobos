@@ -7,7 +7,7 @@ scala:
 
 env:
   global:
-    - NODE_VERSION=6.9.2 # node version for js build
+    - NODE_VERSION=8.9.4 # node version for js build
     - JS_SCALA_VERSION=2.13.1 # scala version used for js build
 
 jdk: openjdk8
