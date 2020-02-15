@@ -3,5 +3,5 @@
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.32")
 
 // sign artifacts for publishing to sonatype
-addSbtPlugin("com.typesafe.sbt" % "sbt-pgp" % "0.8")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.0.0")
 
