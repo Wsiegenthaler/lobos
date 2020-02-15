@@ -1,21 +1,13 @@
 
 scalaVersion in ThisBuild := "2.13.1"
 
-lazy val root = project.in(file(".")).
-  aggregate(lobosJS, lobosJVM).
-  settings(
-    publish := {},
-    publishLocal := {},
-    crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.11")
-  )
-
 lazy val lobos = crossProject(JSPlatform, JVMPlatform).
   in(file(".")).
   settings(
     name := "lobos",
     organization := "com.github.wsiegenthaler",
     version := "0.10.0",
-    scalaVersion := "2.13.1",
+    crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.11"),
     resolvers ++= Seq(
      "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
      "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
