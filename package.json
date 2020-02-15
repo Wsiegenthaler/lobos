@@ -14,6 +14,7 @@
     "del": "^5.1.0",
     "expose-loader": "^0.7.5",
     "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
@@ -27,7 +28,8 @@
     "gzip-js": "^0.3.2"
   },
   "scripts": {
-    "prepublish": "gulp build"
+    "build": "gulp build",
+    "prepublish": "npm run build"
   },
   "main": "js/dist/lobos.js",
   "files": [
