@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/Wsiegenthaler/lobos.svg?branch=master)](https://travis-ci.org/Wsiegenthaler/lobos)
 [![npm version](https://badge.fury.io/js/lobos.svg)](https://www.npmjs.com/package/lobos)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FWsiegenthaler%2Flobos.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FWsiegenthaler%2Flobos?ref=badge_shield)
 
 *A Sobol sequence generator for Scala and Javascript*
 
@@ -92,3 +93,6 @@ Note: Don't forget to `npm install` javascript dependencies before initial build
 Everything in this repo is BSD License unless otherwise specified
 
 lobos (c) 2015 Weston Siegenthaler
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FWsiegenthaler%2Flobos.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FWsiegenthaler%2Flobos?ref=badge_large)
